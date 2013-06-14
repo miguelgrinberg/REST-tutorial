@@ -17,35 +17,63 @@
     <div id="main" class="container">
         <table class="table table-striped">
             <tr><td style="width: 1px;"></td><td><b>Task</b></td><td><b>Options</b></td></tr>
+            <!-- ko foreach: tasks -->
             <tr>
                 <td>
-                    <span class="label label-success">Done</span>
+                    <span data-bind="visible: done" class="label label-success">Done</span>
+                    <span data-bind="visible: !done()" class="label label-important">In Progress</span>
                 </td>
-                <td><p><b>Task title</b></p><p>Task description</p></td>
+                <td><p><b data-bind="text: title"></b></p><p data-bind="text: description"></p></td>
                 <td>
-                    <button class="btn">Edit</button>
-                    <button class="btn">Delete</button>
-                    <span><button class="btn">Mark In Progress</button></span>
+                    <button data-bind="click: $parent.beginEdit" class="btn">Edit</button>
+                    <button data-bind="click: $parent.remove" class="btn">Delete</button>
+                    <span data-bind="visible: done">
+                        <button data-bind="click: $parent.markInProgress" class="btn">Mark In Progress</button>
+                    </span>
+                    <span data-bind="visible: !done()">
+                        <button data-bind="click: $parent.markDone" class="btn">Mark Done</button>
+                    </span>
                 </td>
             </tr>
-            <tr>
-                <td>
-                    <span class="label label-important">In Progress</span>
-                </td>
-                <td><p><b>Task title</b></p><p>Task description</p></td>
-                <td>
-                    <button class="btn">Edit</button>
-                    <button class="btn">Delete</button>
-                    <span><button class="btn">Mark Done</button></span>
-                </td>
-            </tr>
+            <!-- /ko -->
         </table>
-        <button class="btn">Add Task</button>
+        <button data-bind="click: beginAdd" class="btn">Add Task</button>
     </div>
     <script type="text/javascript">
+        function TasksViewModel() {
+            var self = this;
+            self.tasks = ko.observableArray();
 
-        // application code here!
+            self.tasks([
+                {
+                    title: ko.observable('title #1'),
+                    description: ko.observable('description #1'),
+                    done: ko.observable(false)
+                },
+                {
+                    title: ko.observable('title #2'),
+                    description: ko.observable('description #2'),
+                    done: ko.observable(true)
+                }
+            ]);
 
+            self.beginAdd = function() {
+                alert("Add");
+            }
+            self.beginEdit = function(task) {
+                alert("Edit: " + task.title());
+            }
+            self.remove = function(task) {
+                alert("Remove: " + task.title());
+            }
+            self.markInProgress = function(task) {
+                task.done(false);
+            }
+            self.markDone = function(task) {
+                task.done(true);
+            }
+        }
+        ko.applyBindings(new TasksViewModel(), $('#main')[0]);
     </script>
 </body>
 </html>
