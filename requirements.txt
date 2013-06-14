@@ -1,0 +1,2 @@
+flask==0.10
+git+git://github.com/miguelgrinberg/flask-httpauth.git@v0.6
