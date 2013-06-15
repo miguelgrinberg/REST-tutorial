@@ -39,6 +39,65 @@
         </table>
         <button data-bind="click: beginAdd" class="btn">Add Task</button>
     </div>
+    <div id="add" class="modal hide fade" tabindex="=1" role="dialog" aria-labelledby="addDialogLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="addDialogLabel">Add Task</h3>
+        </div>
+        <div class="modal-body">
+            <form class="form-horizontal">
+                <div class="control-group">
+                    <label class="control-label" for="inputTask">Task</label>
+                    <div class="controls">
+                        <input data-bind="value: title" type="text" id="inputTask" placeholder="Task title" style="width: 150px;">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="inputDescription">Description</label>
+                    <div class="controls">
+                        <input data-bind="value: description" type="text" id="inputDescription" placeholder="Description" style="width: 300px;">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button data-bind="click: addTask" class="btn btn-primary">Add Task</button>
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+        </div>
+    </div>
+    <div id="edit" class="modal hide fade" tabindex="=1" role="dialog" aria-labelledby="editDialogLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="editDialogLabel">Add Task</h3>
+        </div>
+        <div class="modal-body">
+            <form class="form-horizontal">
+                <div class="control-group">
+                    <label class="control-label" for="inputTask">Task</label>
+                    <div class="controls">
+                        <input data-bind="value: title" type="text" id="inputTask" placeholder="Task title" style="width: 150px;">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="inputDescription">Description</label>
+                    <div class="controls">
+                        <input data-bind="value: description" type="text" id="inputDescription" placeholder="Description" style="width: 300px;">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <label class="checkbox">
+                            <input data-bind="checked: done" type="checkbox"> Done
+                        </label>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button data-bind="click:editTask" class="btn btn-primary">Update Task</button>
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+        </div>
+    </div>
     <script type="text/javascript">
         function TasksViewModel() {
             var self = this;
@@ -66,21 +125,50 @@
                 };
                 return $.ajax(request);
             }
+            self.updateTask = function(task, newTask) {
+                var i = self.tasks.indexOf(task);
+                self.tasks()[i].uri(newTask.uri);
+                self.tasks()[i].title(newTask.title);
+                self.tasks()[i].description(newTask.description);
+                self.tasks()[i].done(newTask.done);
+            }
 
             self.beginAdd = function() {
-                alert("Add");
+                $('#add').modal('show');
+            }
+            self.add = function(task) {
+                self.ajax(self.tasksURI, 'POST', task).done(function(data) {
+                    self.tasks.push({
+                        uri: ko.observable(data.task.uri),
+                        title: ko.observable(data.task.title),
+                        description: ko.observable(data.task.description),
+                        done: ko.observable(data.task.done)
+                    });
+                });
             }
             self.beginEdit = function(task) {
-                alert("Edit: " + task.title());
+                editTaskViewModel.setTask(task);
+                $('#edit').modal('show');
+            }
+            self.edit = function(task, data) {
+                self.ajax(task.uri(), 'PUT', data).done(function(res) {
+                    self.updateTask(task, res.task);
+                });
             }
             self.remove = function(task) {
-                alert("Remove: " + task.title());
+                self.ajax(task.uri(), 'DELETE').done(function() {
+                    self.tasks.remove(task);
+                });
             }
             self.markInProgress = function(task) {
-                task.done(false);
+                self.ajax(task.uri(), 'PUT', { done: false }).done(function(res) {
+                    self.updateTask(task, res.task);
+                });
             }
             self.markDone = function(task) {
-                task.done(true);
+                self.ajax(task.uri(), 'PUT', { done: true }).done(function(res) {
+                    self.updateTask(task, res.task);
+                });
             }
             
             self.ajax(self.tasksURI, 'GET').done(function(data) {
@@ -94,10 +182,51 @@
                 }
             });
         }
+        function AddTaskViewModel() {
+            var self = this;
+            self.title = ko.observable();
+            self.description = ko.observable();
+ 
+            self.addTask = function() {
+                $('#add').modal('hide');
+                tasksViewModel.add({
+                    title: self.title(),
+                    description: self.description()
+                });
+                self.title("");
+                self.description("");
+            }
+        }
+        function EditTaskViewModel() {
+            var self = this;
+            self.title = ko.observable();
+            self.description = ko.observable();
+            self.done = ko.observable();
+ 
+            self.setTask = function(task) {
+                self.task = task;
+                self.title(task.title());
+                self.description(task.description());
+                self.done(task.done());
+                $('edit').modal('show');
+            }
+ 
+            self.editTask = function() {
+                $('#edit').modal('hide');
+                tasksViewModel.edit(self.task, {
+                    title: self.title(),
+                    description: self.description() ,
+                    done: self.done()
+                });
+            }
+        }
         
-        //$().ready(function() {
-            ko.applyBindings(new TasksViewModel(), $('#main')[0]);
-        //});
+        var tasksViewModel = new TasksViewModel();
+        var addTaskViewModel = new AddTaskViewModel();
+        var editTaskViewModel = new EditTaskViewModel();
+        ko.applyBindings(tasksViewModel, $('#main')[0]);
+        ko.applyBindings(addTaskViewModel, $('#add')[0]);
+        ko.applyBindings(editTaskViewModel, $('#edit')[0]);
     </script>
 </body>
 </html>
