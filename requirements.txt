@@ -1,2 +1,3 @@
 flask==0.10
-git+git://github.com/miguelgrinberg/flask-httpauth.git@v0.6
+flask-restful==0.2.3
+Flask-HTTPAuth==1.0.0
