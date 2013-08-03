@@ -1,10 +1,11 @@
 REST-tutorial
 =============
 
-Files for my REST API tutorials featuring a server written in Python and a web client written in Javascript.
+Files for my REST API tutorials featuring a server written in Python and a web client written in Javascript. Here are the articles:
 
-REST server tutorial can be found [here](http://blog.miguelgrinberg.com/post/designing-a-restful-api-with-python-and-flask).
-REST client tutorial can be found [here](http://blog.miguelgrinberg.com/post/writing-a-javascript-rest-client).
+- [Designing a RESTful API with Python and Flask](http://blog.miguelgrinberg.com/post/designing-a-restful-api-with-python-and-flask)
+- [Writing a Javascript REST client](http://blog.miguelgrinberg.com/post/writing-a-javascript-rest-client)
+- [Designing a RESTful API using Flask-RESTful](http://blog.miguelgrinberg.com/post/designing-a-restful-api-using-flask-restful)
 
 Setup
 -----
