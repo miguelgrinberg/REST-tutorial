@@ -90,9 +90,9 @@ class TaskAPI(Resource):
             abort(404)
         task = task[0]
         args = self.reqparse.parse_args()
-        task['title'] = args.get('title', task['title'])
-        task['description'] = args.get('description', task['description'])
-        task['done'] = args.get('done', task['done'])
+        for k, v in args.iteritems():
+            if v != None:
+                task[k] = args.get(k, task[k])
         return { 'task': marshal(task, task_fields) }
 
     def delete(self, id):
