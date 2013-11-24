@@ -92,7 +92,7 @@ class TaskAPI(Resource):
         args = self.reqparse.parse_args()
         for k, v in args.iteritems():
             if v != None:
-                task[k] = args.get(k, task[k])
+                task[k] = v
         return { 'task': marshal(task, task_fields) }
 
     def delete(self, id):
