@@ -10,9 +10,10 @@ Files for my REST API tutorials featuring a server written in Python and a web c
 Setup
 -----
 
-- Install Python 2.7 and git.
+- Install Python 2.7, git and (optionally) MongoDB.
 - Run `setup.sh` (Linux, OS X, Cygwin) or `setup.bat` (Windows)
 - Run `./rest-server.py` to start the server (on Windows use `flask\Scripts\python rest-server.py` instead)
 - Alternatively, run `./rest-server-v2.py` to start the Flask-RESTful version of the server.
+- Alternatively, run `./rest-server-v2-mongo.py` to start the Flask-RESTful + MongoDB version of the server. Please note that you need to run MongoDB before running this example. 
 - Open `http://localhost:5000/index.html` on your web browser to run the client
 
