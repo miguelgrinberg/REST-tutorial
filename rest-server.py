@@ -1,7 +1,7 @@
 #!flask/bin/python
 import six
 from flask import Flask, jsonify, abort, request, make_response, url_for
-from flask.ext.httpauth import HTTPBasicAuth
+from flask_httpauth import HTTPBasicAuth
 
 app = Flask(__name__, static_url_path="")
 auth = HTTPBasicAuth()
