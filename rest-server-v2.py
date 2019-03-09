@@ -66,7 +66,7 @@ class TaskListAPI(Resource):
     def post(self):
         args = self.reqparse.parse_args()
         task = {
-            'id': tasks[-1]['id'] + 1,
+            'id': tasks[-1]['id'] + 1 if len(tasks) > 0 else 1,
             'title': args['title'],
             'description': args['description'],
             'done': False

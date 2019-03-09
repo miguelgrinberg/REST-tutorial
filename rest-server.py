@@ -79,7 +79,7 @@ def create_task():
     if not request.json or 'title' not in request.json:
         abort(400)
     task = {
-        'id': tasks[-1]['id'] + 1,
+        'id': tasks[-1]['id'] + 1 if len(tasks) > 0 else 1,
         'title': request.json['title'],
         'description': request.json.get('description', ""),
         'done': False
