@@ -44,7 +44,7 @@ task_fields = {
     'title': fields.String,
     'description': fields.String,
     'done': fields.Boolean,
-    'uri': fields.Url('task')
+    'uri': fields.Url('tasks')
 }
 
 
