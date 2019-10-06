@@ -2,8 +2,10 @@
 import six
 from flask import Flask, jsonify, abort, request, make_response, url_for
 from flask_httpauth import HTTPBasicAuth
+from flask_cors import CORS
 
 app = Flask(__name__, static_url_path="")
+CORS(app)
 auth = HTTPBasicAuth()
 
 
