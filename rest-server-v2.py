@@ -6,8 +6,10 @@ Flask-RESTful extension."""
 from flask import Flask, jsonify, abort, make_response
 from flask_restful import Api, Resource, reqparse, fields, marshal
 from flask_httpauth import HTTPBasicAuth
+from flask_cors import CORS
 
 app = Flask(__name__, static_url_path="")
+CORS(app)
 api = Api(app)
 auth = HTTPBasicAuth()
 
