@@ -1,4 +1,4 @@
-Flask==0.10.1
+Flask==1.0
 Flask-HTTPAuth==2.3.0
 Flask-RESTful==0.3.1
 Jinja2==2.7.3
