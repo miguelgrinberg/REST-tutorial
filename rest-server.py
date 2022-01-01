@@ -1,5 +1,4 @@
 #!flask/bin/python
-import six
 from flask import Flask, jsonify, abort, request, make_response, url_for
 from flask_httpauth import HTTPBasicAuth
 
@@ -97,10 +96,10 @@ def update_task(task_id):
     if not request.json:
         abort(400)
     if 'title' in request.json and \
-            not isinstance(request.json['title'], six.string_types):
+            not isinstance(request.json['title'], str):
         abort(400)
     if 'description' in request.json and \
-            not isinstance(request.json['description'], six.string_types):
+            not isinstance(request.json['description'], str):
         abort(400)
     if 'done' in request.json and type(request.json['done']) is not bool:
         abort(400)

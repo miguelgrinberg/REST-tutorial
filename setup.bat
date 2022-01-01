@@ -1,2 +1,2 @@
-python -m venv flask
-flask\Scripts\pip install -r requirements.txt
+python -m venv venv
+venv\Scripts\pip install -r requirements.txt
