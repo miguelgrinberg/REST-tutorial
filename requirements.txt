@@ -8,4 +8,4 @@ Jinja2==3.0.3
 MarkupSafe==2.0.1
 pytz==2021.3
 six==1.16.0
-Werkzeug==2.0.2
+Werkzeug==2.2.3
